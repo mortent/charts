@@ -9,6 +9,9 @@ metadata:
     component: "slave"
     release: {{ .Release.Name | quote }}
     heritage: {{ .Release.Service | quote }}
+    {{- if .Values.application.tag }}
+    app.kubernetes.io/name: {{ .Release.Name }}
+    {{- end }}
 {{- if .Values.metrics.enabled }}
   annotations:
 {{ toYaml .Values.metrics.annotations | indent 4 }}

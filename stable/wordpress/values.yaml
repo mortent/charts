@@ -129,6 +129,15 @@ mariadb:
       accessMode: ReadWriteOnce
       size: 8Gi
 
+  ## Whether the MariaDB chart should generate a Application resources (should always be false),
+  ## and whether the resources created by the MariaDB chart should be tagged with the App CRD label. Should
+  ## be set to true if the creation of application resource is enabled for this Chart.
+  ##
+  application:
+    create: false
+    tag: false
+
+
 ## Kubernetes configuration
 ## For minikube, set this to NodePort, elsewhere use LoadBalancer or ClusterIP
 ##
@@ -252,3 +261,10 @@ tolerations: []
 ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
 ##
 affinity: {}
+
+## Whether an application resource (based on the App CRD) should be created and whether
+## resources created by this chart should be tagged with the App CRD label
+##
+application:
+  create: false
+  tag: false

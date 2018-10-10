@@ -282,3 +282,11 @@ metrics:
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "9104"
+
+
+## Whether an application resource (based on the App CRD) should be created and whether
+## resources created by this chart should be tagged with the App CRD label
+##
+application:
+  create: false
+  tag: false

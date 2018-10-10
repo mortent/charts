@@ -9,6 +9,9 @@ metadata:
     chart: {{ template "mariadb.chart" . }}
     release: {{ .Release.Name | quote }}
     heritage: {{ .Release.Service | quote }}
+    {{- if .Values.application.tag }}
+    app.kubernetes.io/name: {{ .Release.Name }}
+    {{- end }}
 data:
   my.cnf: |-
 {{ .Values.slave.config | indent 4 }}

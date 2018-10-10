@@ -1,0 +1,62 @@
+{{- if .Values.application.create }}
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+spec:
+  selector:
+    matchLabels:
+     app.kubernetes.io/name: {{ .Release.Name }}
+  componentKinds:
+    - group: core
+      kind: Service
+    - group: core
+      kind: Secret
+    {{- if .Values.ingress.enabled }}
+    - group: extensions
+      kind: Ingress
+    {{- end }}
+    {{- if and .Values.persistence.enabled (not .Values.persistence.existingClaim) }}
+    - group: core
+      kind: PersistentVolumeClaim
+    {{- end }}
+    - group: apps
+      kind: Deployment
+    {{- if .Values.mariadb.enabled }}
+    - group: apps
+      kind: StatefulSet
+    - group: core
+      kind: ConfigMap
+    {{- end }}
+  assemblyPhase: "Succeeded"
+  descriptor:
+    version: {{ .Chart.AppVersion }}
+    description: {{ .Chart.Description }}
+    icons:
+      - src: "https://example.com/wordpress.png"
+        type: "image/png"
+    type: "wordpress"
+    maintainers:
+      {{- range .Chart.Maintainers }}
+      - name: {{ .Name }}
+        email: {{ .Email }}
+      {{- end }}
+    owners:
+      {{- range .Chart.Maintainers }}
+      - "{{ .Name }} {{ .Email }}"
+      {{- end }}
+    keywords:
+      {{- range $value := .Chart.Keywords }}
+      - {{ $value | quote }}
+      {{- end }}
+    links:
+      - description: About
+        url: "https://wordpress.org/"
+      - description: Web Server Dashboard
+        url: "https://metrics/internal/wordpress-01/web-app"
+      - description: Mysql Dashboard
+        url: "https://metrics/internal/wordpress-01/mysql"
+{{- end }}
